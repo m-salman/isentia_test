@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#
 # Scrapy settings for pynews_crawler project
 #
 
@@ -13,23 +13,24 @@ NEWSPIDER_MODULE = 'pynews_crawler.spiders'
 LOG_LEVEL = 'INFO'
 
 # MongoDB settings
-MONGODB_URI = 'mongodb://spider:secret@aws-us-east-1-portal.11.dblayer.com:27786,aws-us-east-1-portal.10.dblayer.com:11136/crawlerdb'
-MONGODB_DATABASE = 'crawlerdb'
+# MONGODB_URI = 'mongodb://spider:secret@aws-us-east-1-portal.11.dblayer.com:27786,aws-us-east-1-portal.10.dblayer.com:11136/crawlerdb'
+# MONGODB_DATABASE = 'crawlerdb'
+MONGODB_URI = 'mongodb://scrapy:scrapy@localhost:27017/pycrawl'
+MONGODB_DATABASE = 'pycrawl'
 MONGODB_COLLECTION = 'news'
-MONGODB_
-MONGODB_DATA_BUFFER = 10
 MONGOBD_INDEX_FIELDS = [('title', 'text'), ('body', 'text')]
 MONGODB_INDEX_WEIGHTS = {'title': 100, 'body': 25}
+# MONGODB_DATA_BUFFER is not supported with MONGODB_UNIQUE_KEY. Please pick one.
+# MONGODB_UNIQUE_KEY = 'url'
+MONGODB_DATA_BUFFER = 10
 
-USER_AGENT = 'pynews bot (http://github.com/pynews_crawler)'
 
-# Concurrent requests
+# Responsible crawling :)
+USER_AGENT = 'pynews bot (http://github.com/m-salman/isentia_test)'
 CONCURRENT_REQUESTS = 16
 DEPTH_LIMIT = 5
 DOWNLOAD_DELAY = 5
 CONCURRENT_REQUESTS_PER_DOMAIN = 16
-
-TELNETCONSOLE_ENABLED = False
 
 # Configure item pipelines
 ITEM_PIPELINES = {
@@ -37,22 +38,12 @@ ITEM_PIPELINES = {
     'pynews_crawler.pipelines.MongoDBPipeLine': 200
 }
 
-# Enable and configure HTTP caching (disabled by default)
-# See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
+# Disable telnet console etc.
+TELNETCONSOLE_ENABLED = False
+
+# Configure HTTP caching
 HTTPCACHE_ENABLED = True
 HTTPCACHE_EXPIRATION_SECS = 3600
 HTTPCACHE_DIR = 'httpcache'
 HTTPCACHE_IGNORE_HTTP_CODES = [301, 404, 500, 501]
 HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-
-
-# Enable and configure the AutoThrottle extension (disabled by default)
-# See http://doc.scrapy.org/en/latest/topics/autothrottle.html
-# NOTE: AutoThrottle will honour the standard settings for concurrency and delay
-# AUTOTHROTTLE_ENABLED=True
-# The initial download delay
-# AUTOTHROTTLE_START_DELAY=5
-# The maximum download delay to be set in case of high latencies
-# AUTOTHROTTLE_MAX_DELAY=60
-# Enable showing throttling stats for every response received:
-# AUTOTHROTTLE_DEBUG=False

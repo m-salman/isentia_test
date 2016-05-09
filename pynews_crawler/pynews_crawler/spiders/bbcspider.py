@@ -17,7 +17,7 @@ class BBCNewsSpider(scrapy.spiders.CrawlSpider):
     )
 
     def crawl_item(self, response):
-        self.logger.info('Scraping: <%s>' % response.url)
+        self.logger.info('Crawling: <%s>' % response.url)
         item = NewsItem()
         item['url'] = response.url
         # Note that entire response is being thrown down the pipeline,
