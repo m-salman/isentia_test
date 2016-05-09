@@ -13,10 +13,8 @@ NEWSPIDER_MODULE = 'pynews_crawler.spiders'
 LOG_LEVEL = 'INFO'
 
 # MongoDB settings
-# MONGODB_URI = 'mongodb://spider:secret@aws-us-east-1-portal.11.dblayer.com:27786,aws-us-east-1-portal.10.dblayer.com:11136/crawlerdb'
-# MONGODB_DATABASE = 'crawlerdb'
-MONGODB_URI = 'mongodb://scrapy:scrapy@localhost:27017/pycrawl'
-MONGODB_DATABASE = 'pycrawl'
+MONGODB_URI = 'mongodb://spider:secret@aws-us-east-1-portal.11.dblayer.com:27786,aws-us-east-1-portal.10.dblayer.com:11136/crawlerdb'
+MONGODB_DATABASE = 'crawlerdb'
 MONGODB_COLLECTION = 'news'
 MONGOBD_INDEX_FIELDS = [('title', 'text'), ('body', 'text')]
 MONGODB_INDEX_WEIGHTS = {'title': 100, 'body': 25}
