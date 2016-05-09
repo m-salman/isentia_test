@@ -3,15 +3,22 @@ __author__ = 'salman'
 import os
 import pprint
 import logging
-from flask import Flask, request, redirect, abort
+from flask import Flask, request, render_template, abort
 from flask.ext.pymongo import PyMongo
 
 import werkzeug.exceptions as exceptions
 
 app = Flask(__name__)
 
-app.config[
-    'MONGO_URI'] = 'mongodb://apiuser:secret@aws-us-east-1-portal.11.dblayer.com:27786,aws-us-east-1-portal.10.dblayer.com:11136/crawlerdb'
+user = 'apiuser'
+pwd = 'secret'
+database = 'crawlerdb'
+
+app.config['MONGO_URI'] = 'mongodb://' \
+                          + user + ':' \
+                          + pwd \
+                          + '@aws-us-east-1-portal.11.dblayer.com:27786,aws-us-east-1-portal.10.dblayer.com:11136/' \
+                          + database
 
 mongo = PyMongo(app)
 
@@ -28,25 +35,35 @@ abort.mapping[403] = KeyWordRequired
 
 
 @app.route('/')
-def welcome():
-    abort(403)
+def home():
+    return render_template('index.html')
 
 
-@app.route('/search')
+@app.route('/search/', methods=['GET', 'POST'])
 def search():
-    print request.args
-    keyword = request.args.get('keyword', None)
+    keyword = None
 
-    if keyword is None:
+    if request.method == 'POST':
+        keyword = request.form['keyword']
+    elif request.method == 'GET':
+        keyword = request.args.get('keyword')
+
+    if not keyword:
         abort(403)
 
-    logger.debug('Looking for keywords={0}'.format(keyword.split(',')))
+    # print 'Search keyword={0}'.format(keyword.split(','))
 
     cursor = mongo.db.news.find(
-        {'$text': {'$search': keyword}},
-        fields=({'title': 1, 'body': 1, 'score': {'$meta': 'textScore'}})
+        {'$text': {'$search': keyword}}
     )
-    return '<br><br>'.join(pprint.pformat(document) for document in cursor)
+
+    # print '\n\n'.join(pprint.pformat(document) for document in cursor)
+
+    documents = []
+    for doc in cursor:
+        documents.append(doc)
+
+    return render_template('results.html', keyword=keyword, documents=documents)
 
 
 if __name__ == "__main__":

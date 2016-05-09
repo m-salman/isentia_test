@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results [MongoDB]</title>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+</head>
+   <body>
+        <div id="container">
+            <div class="title">
+                <h1>Search results</h1>
+            </div>
+            <div id="content">
+                Keyword: <strong>{{keyword}}</strong>
+            </div>
+            {% for document in documents %}
+                <div><p> {{ document.url }} says: <b>{{ document.title }}</b></p></div>
+            {% endfor %}
+        </div>
+    </body>
+</html>

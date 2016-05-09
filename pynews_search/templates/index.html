@@ -3,14 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>PyNews Archive</title>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
-<h1>Enter keyword to search</h1>
-
-<form action="/write" method="POST">
-    <input type="text" name="userinput" id="userinput">
-    <input type="submit" value="Submit">
-</form>
-
+    <div id="container">
+        <div class="title">
+            <h1>Search News Database</h1>
+        </div>
+        <div id="content">
+            <form method="post" action="{{ url_for('search') }}">
+              <label for="keyword">Please enter keyword to search:</label>
+              <input type="text" name="keyword" /><br />
+              <input type="submit" />
+            </form>
+        </div>
+    </div>
 </body>
+
 </html>
