@@ -12,10 +12,21 @@
             </div>
             <div id="content">
                 Keyword: <strong>{{keyword}}</strong>
+                <div>
+                    {% if documents is not none %}
+                        {% for document in documents %}
+                        <table>
+                        <tr> <td align="left">ID:</td>> <td align="left"> {{document._id}} </td>> </tr>
+                        <tr> <td align="left">URL:</td>> <td align="left"> {{document.url}} </td>> </tr>
+                        <tr> <td align="left">Title:</td>> <td align="left"> {{document.title}} </td>> </tr>
+                        <tr> <td align="left" valign="top">Text:</td>> <td align="left"> {{document.article_text}} </td>> </tr>
+                        </table>
+                        {% endfor %}
+                    {% else %}
+                        <p><b>No matching documents found!</b></p>
+                    {% endif %}
+                </div>
             </div>
-            {% for document in documents %}
-                <div><p> {{ document.url }} says: <b>{{ document.title }}</b></p></div>
-            {% endfor %}
         </div>
     </body>
 </html>

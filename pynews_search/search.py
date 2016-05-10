@@ -1,28 +1,27 @@
 __author__ = 'salman'
 
-import os
-import pprint
 import logging
 from flask import Flask, request, render_template, abort
 from flask.ext.pymongo import PyMongo
 
 import werkzeug.exceptions as exceptions
 
-app = Flask(__name__)
-
-user = 'apiuser'
-pwd = 'secret'
+username = 'apiuser'
+password = 'secret'
 database = 'crawlerdb'
+host = '0.0.0.0'
+port = 5000
 
+app = Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb://' \
-                          + user + ':' \
-                          + pwd \
+                          + username + ':' \
+                          + password \
                           + '@aws-us-east-1-portal.11.dblayer.com:27786,aws-us-east-1-portal.10.dblayer.com:11136/' \
                           + database
 
 mongo = PyMongo(app)
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(app.name)
 
 
 class KeyWordRequired(exceptions.HTTPException):
@@ -51,17 +50,20 @@ def search():
     if not keyword:
         abort(403)
 
-    # print 'Search keyword={0}'.format(keyword.split(','))
+    logger.debug('Search keyword={0}'.format(keyword))
 
+    # TODO: Paginate the results
     cursor = mongo.db.news.find(
         {'$text': {'$search': keyword}}
     )
 
-    # print '\n\n'.join(pprint.pformat(document) for document in cursor)
-
     documents = []
-    for doc in cursor:
-        documents.append(doc)
+
+    if cursor.count():
+        for document in cursor:
+            documents.append(document)
+    else:
+        documents = None
 
     return render_template('results.html', keyword=keyword, documents=documents)
 
