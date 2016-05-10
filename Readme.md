@@ -4,7 +4,7 @@ A news crawler written in python using Scrapy, Compose MongoDB and Flask.
 
 ## Getting Started
 
-The project was built using Python 2.7.11, so it is recommended to use the latest 2.x version. To get started, please grab a copy of both pynews_crawler and pynews_search code. It's always a good practice to setup a seperate virtual envionrment for eah project. To setup a virtual enviornment, in the project directory please go:
+The project was built using Python 2.7.11, so it is recommended to use the latest 2.x version. Please see the diagram in docs/ folder to get a high level idea of the components involved. To get started, please grab a copy of both pynews_crawler and pynews_search code. It's always a good practice to setup a seperate virtual envionrment for eah project. To setup a virtual enviornment, in the project directory please go:
 
 ```
 pip install virtualenv
@@ -46,18 +46,14 @@ To run pynews_search from the directory, go:
 python search.py
 ```
 
-Now you can fire up a browser and enter http://localhost:5000 to launch a bare bones search app.
+Now you can fire up a browser and enter http://<host>:5000 to launch a bare bones search app.
 
 You can also use the brilliant [python requests library](http://docs.python-requests.org/en/master/#) for python to send GET requests. 
 Using the request library, you can go:
 ```
-r = requests.get('https://localhost:5000/search?keyword=your_search_term')
+r = requests.get('https://localhost:5000/search?keyword=search_terms&phrase=off')
 r.json()
 ```
-
-## Running the tests
-
-Explain how to run the automated unit tests for this system
 
 
 ## Authors
