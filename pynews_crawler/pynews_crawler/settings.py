@@ -16,18 +16,16 @@ LOG_LEVEL = 'INFO'
 MONGODB_URI = 'mongodb://spider:secret@aws-us-east-1-portal.11.dblayer.com:27786,aws-us-east-1-portal.10.dblayer.com:11136/crawlerdb'
 MONGODB_DATABASE = 'crawlerdb'
 MONGODB_COLLECTION = 'news'
-MONGOBD_INDEX_FIELDS = [('title', 'text'), ('body', 'text')]
-MONGODB_INDEX_WEIGHTS = {'title': 100, 'body': 25}
-# MONGODB_DATA_BUFFER is not supported with MONGODB_UNIQUE_KEY. Please pick one.
-# MONGODB_UNIQUE_KEY = 'url'
+MONGOBD_INDEX_FIELDS = [('title', 'text'), ('cleaned_text', 'text')]
+MONGODB_INDEX_WEIGHTS = {'title': 100, 'cleaned_text': 75}
 MONGODB_DATA_BUFFER = 10
 
 
 # Responsible crawling :)
 USER_AGENT = 'pynews bot (http://github.com/m-salman/isentia_test)'
 CONCURRENT_REQUESTS = 16
-DEPTH_LIMIT = 5
-DOWNLOAD_DELAY = 5
+DEPTH_LIMIT = 10
+DOWNLOAD_DELAY = 3
 CONCURRENT_REQUESTS_PER_DOMAIN = 16
 
 # Configure item pipelines

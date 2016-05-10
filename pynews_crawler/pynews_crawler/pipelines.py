@@ -27,10 +27,11 @@ class ExtractArticlePipeLine(object):
 
         article = self.extractor.article_from_html(item['cleaned_text'].getvalue())
 
-        for key in item.keys():
-            if key == 'url':
-                continue
-            item[key] = getattr(article, key)
+        item['title'] = article.title
+        item['authors'] = article.authors
+        item['cleaned_text'] = article.cleaned_text
+        item['publish_date'] = article.publish_date
+        item['meta_description'] = article.meta_description
 
         if not item['cleaned_text']:
             raise DropItem('Article extraction failed! URL: <{0}>'.format(item['url']))
