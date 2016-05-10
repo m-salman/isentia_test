@@ -8,5 +8,5 @@ class NewsItem(scrapy.Item):
     title = scrapy.Field()
     authors = scrapy.Field()
     publish_date = scrapy.Field()
-    article_text = scrapy.Field()
+    cleaned_text = scrapy.Field()
     meta_description = scrapy.Field()

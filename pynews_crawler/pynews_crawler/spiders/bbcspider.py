@@ -19,8 +19,7 @@ class BBCNewsSpider(scrapy.spiders.CrawlSpider):
     def crawl_item(self, response):
         self.logger.info('Crawling: <%s>' % response.url)
         item = NewsItem()
+        # Article extractor runs later in the pipeline.
         item['url'] = response.url
-        # Note that entire response is being thrown down the pipeline,
-        # article extraction is done using Goose.
-        item['article_text'] = StringIO.StringIO(response.body)
+        item['cleaned_text'] = StringIO.StringIO(response.body)
         return item

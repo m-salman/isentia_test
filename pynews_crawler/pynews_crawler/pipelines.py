@@ -1,41 +1,39 @@
 __author__ = 'salman'
 
+import logging
+import datetime
+
 import pymongo
 import pymongo.errors
 
 from scrapy import signals
 from scrapy.exceptions import DropItem
 
-import goose
-import logging
-import datetime
+from extractors import ArticleExtractor
 
 
 class ExtractArticlePipeLine(object):
     """
-    Extract articles from crawled items.
+    Extract information from crawled items.
+    Drop items if failed to extract information.
     """
 
     def __init__(self):
-        self.goose = goose.Goose()
+        self.extractor = ArticleExtractor()
 
     def process_item(self, item, spider):
         self.logger = logging.getLogger(spider.name)
-
         self.logger.info('Extracting :<{0}>'.format(item['url']))
 
-        # Pass raw html Goose
-        article = self.goose.extract(raw_html=item['article_text'].getvalue())
+        article = self.extractor.article_from_html(item['cleaned_text'].getvalue())
 
-        if not article.cleaned_text:
-            raise DropItem('Article extraction failure: <{0}>'.format(item['url']))
+        for key in item.keys():
+            if key == 'url':
+                continue
+            item[key] = getattr(article, key)
 
-        # Depending on the spider and site, some feilds might not be populated
-        item['title'] = article.title
-        item['authors'] = ','.join(article.authors)
-        item['publish_date'] = article.publish_date
-        item['article_text'] = article.cleaned_text
-        item['meta_description'] = article.meta_description
+        if not item['cleaned_text']:
+            raise DropItem('Article extraction failed! URL: <{0}>'.format(item['url']))
 
         self.logger.debug('Article extracted! Spider:<{0}> URL:<{1}>'.format(spider.name, item['url']))
 
