@@ -13,9 +13,10 @@
         </div>
         <div id="content">
             <form method="post" action="{{ url_for('search') }}">
-              <label for="keyword">Please enter keyword to search:</label>
-              <input type="text" name="keyword" /><br />
-              <input type="submit" />
+                <label for="keyword">Please enter keyword to search:</label>
+                <input name="keyword" type="text"  /><br />
+                <input name="phrase" value="off" type="checkbox"> Search phrase <br>
+                <input type="submit" />
             </form>
         </div>
     </div>

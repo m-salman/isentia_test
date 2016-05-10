@@ -41,20 +41,26 @@ def home():
 @app.route('/search/', methods=['GET', 'POST'])
 def search():
     keyword = None
+    phrase_search = 'off'
 
     if request.method == 'POST':
         keyword = request.form['keyword']
+        phrase_search = request.form.get('phrase')
     elif request.method == 'GET':
         keyword = request.args.get('keyword')
+        phrase_search = request.args.get('phrase')
 
     if not keyword:
         abort(403)
+
+    if phrase_search == 'on':
+        keyword = '\"' + keyword + '\"'
 
     logger.debug('Search keyword={0}'.format(keyword))
 
     # TODO: Paginate the results
     cursor = mongo.db.news.find(
-        {'$text': {'$search': keyword}}
+        {'$text': {'$search': keyword }}
     )
 
     documents = []
